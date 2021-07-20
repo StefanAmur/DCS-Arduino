@@ -28,7 +28,7 @@ unsigned long delaytime=100;
 /* paste code snippets from the reference documentation here */
 
 ///////////////////////////////////////////////////////////////////////////////
-//First 2 digits on R-800 AM radio freq
+//First 2 LED display digits on R-800 AM radio freq
 void onR800Freq1Change(char* newValue) {
     lc.setChar(0,6,newValue[0],false);
     lc.setChar(0,5,newValue[1],false);
@@ -43,7 +43,7 @@ void onR800Freq2Change(unsigned int newValue) {
 }
 DcsBios::IntegerBuffer r800Freq2Buffer(0x190c, 0x3c00, 10, onR800Freq2Change);
 //2nd rotary
-DcsBios::RotaryEncoder r800Freq2("R800_FREQ2", "DEC", "INC", 5, 4);
+DcsBios::RotaryEncoder r800Freq2("R800_FREQ2", "DEC", "INC", 4, 5);
 
 //Fourth digit on R-800 AM radio freq
 void onR800Freq3Change(unsigned int newValue) {
@@ -51,7 +51,7 @@ void onR800Freq3Change(unsigned int newValue) {
 }
 DcsBios::IntegerBuffer r800Freq3Buffer(0x1910, 0x000f, 0, onR800Freq3Change);
 //3rd rotary
-DcsBios::RotaryEncoder r800Freq3("R800_FREQ3", "DEC", "INC", 7, 6);
+DcsBios::RotaryEncoder r800Freq3("R800_FREQ3", "DEC", "INC", 6, 7);
 
 //Fifth and sixth digits on R-800 AM radio freq
 void onR800Freq4Change(char* newValue) {
@@ -61,17 +61,20 @@ void onR800Freq4Change(char* newValue) {
 DcsBios::StringBuffer<2> r800Freq4Buffer(0x1912, onR800Freq4Change);
 
 //R-800 AM / ADF Volume Knob
-DcsBios::RotaryEncoder adfVolume("ADF_VOLUME", "-3200", "+3200", A2, A3);
+DcsBios::RotaryEncoder adfVolume("ADF_VOLUME", "-3200", "+3200", A3, A2);
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-//R-828 FM
+//R-828 FM Radio (eg: 30.000AM)
 void onR828ChannelChange(unsigned int newValue) {
     lc.setLed(1,7,1,true);
     lc.setLed(1,7,4,true);
     lc.setLed(1,7,5,true);
     lc.setLed(1,7,6,true);
-    lc.setLed(1,7,0,true);
-    lc.setChar(1,6,'P',true);
+    lc.setLed(1,6,2,true);
+    lc.setLed(1,6,3,true);
+    lc.setLed(1,6,5,true);
+    lc.setLed(1,6,6,true);
+    lc.setLed(1,6,7,true);
     lc.setChar(1,4,newValue+1,false);
 }
 DcsBios::IntegerBuffer r828ChannelBuffer(0x194a, 0x003c, 2, onR828ChannelChange);
