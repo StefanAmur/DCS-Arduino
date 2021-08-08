@@ -28,16 +28,17 @@ unsigned long delaytime=100;
 /* paste code snippets from the reference documentation here */
 
 ///////////////////////////////////////////////////////////////////////////////
-//First 2 LED display digits on R-800 AM radio freq
+//R-800 AM Radio (eg: 126.000 AM)
+//Display first 2 digits on radio freq
 void onR800Freq1Change(char* newValue) {
     lc.setChar(0,6,newValue[0],false);
     lc.setChar(0,5,newValue[1],false);
 }
 DcsBios::StringBuffer<2> r800Freq1Buffer(0x190e, onR800Freq1Change);
-//1st rotary
+//1st rotary knob
 DcsBios::RotaryEncoder r800Freq1("R800_FREQ1", "DEC", "INC", 3, 2);
 
-//Third digit on R-800 AM radio freq
+//Display third digit on radio freq
 void onR800Freq2Change(unsigned int newValue) {
     lc.setChar(0,4,newValue,true);
 }
@@ -66,15 +67,18 @@ DcsBios::RotaryEncoder adfVolume("ADF_VOLUME", "-3200", "+3200", A3, A2);
 
 //R-828 FM Radio (eg: 30.000AM)
 void onR828ChannelChange(unsigned int newValue) {
+    // write "C" as the first char
     lc.setLed(1,7,1,true);
     lc.setLed(1,7,4,true);
     lc.setLed(1,7,5,true);
     lc.setLed(1,7,6,true);
+    // write "H" as the second char
     lc.setLed(1,6,2,true);
     lc.setLed(1,6,3,true);
     lc.setLed(1,6,5,true);
     lc.setLed(1,6,6,true);
     lc.setLed(1,6,7,true);
+    // display the current preset channel number
     lc.setChar(1,4,newValue+1,false);
 }
 DcsBios::IntegerBuffer r828ChannelBuffer(0x194a, 0x003c, 2, onR828ChannelChange);
